@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/provider/theme-provider";
+import TopBar from "@/components/ui/TopBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <TopBar />
+          <main className="flex flex-row">
+            {/* sidebar */}
+            <section className="w-full">
+              <div className="container bg-muted/40">{children}</div>
+            </section>
+          </main>
         </ThemeProvider>
       </body>
     </html>
