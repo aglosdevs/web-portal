@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/provider/theme-provider";
 import TopBar from "@/components/ui/TopBar";
+import Sidebar from "@/components/ui/Sidebar";
 
-const inter = Inter({ subsets: ["latin"] });
+const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Web Portal",
@@ -18,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={nunito.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -28,6 +29,7 @@ export default function RootLayout({
           <TopBar />
           <main className="flex flex-row">
             {/* sidebar */}
+            <Sidebar />
             <section className="w-full">
               <div className="container bg-muted/40">{children}</div>
             </section>
