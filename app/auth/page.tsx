@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,17 +19,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import * as z from "zod";
-import { useForm } from "react-hook-form/dist";
+import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from 'next/navigation'
+import useUserHook from "@/hook/userHooks";
+
+const formSchema = z.object({
+	email: z
+		.string()
+		.min(6, {
+			message: 'Email is required',
+		})
+		.email({
+			message: 'Please enter a valid email',
+		}),
+	password: z.string().min(6, {
+		message: 'Password is required',
+	}),
+})
+
 
 const Auth = () => {
-  const formSchema = z.object({
-    email: z.string().email(),
-    password: z
-      .string()
-      .min(5, { message: "password must be atlist 5 character" })
-      .max(50),
-  });
+
+  const router = useRouter();
+  const userLoginHook = useUserHook();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -38,16 +52,15 @@ const Auth = () => {
     },
   });
 
-  function onSubmit() {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // console.log(values);
-  }
+  const handleSubmit = (data: z.infer<typeof formSchema>) => {       
+    userLoginHook.handleUSerLogin(data);    
+		router.push('/')
+	}
 
   return (
     <section className="w-full max-w-sm h-[100vh] flex justify-center items-center m-auto">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Login</CardTitle>
@@ -64,7 +77,10 @@ const Auth = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter Email" {...field} />
+                        <Input
+                          type="email"
+                          placeholder="Enter Email"
+                          {...field} />
                       </FormControl>
 
                       <FormMessage />
@@ -78,11 +94,13 @@ const Auth = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter Password" {...field} />
+                        <Input
+                          type="password"
+                          placeholder="Enter Password"
+                          {...field} />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
