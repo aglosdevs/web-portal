@@ -1,7 +1,6 @@
-// flage this
+// flag this
 "use server";
 
-import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "../supabas/server";
 
 // user login
@@ -13,7 +12,8 @@ export const login = async ({
 }: {
   email: string;
   password: string;
-}) => {
+  }) => {
+    
   try {
     // initialize the login with with email and passord
     const supabase = createClient();
@@ -21,6 +21,8 @@ export const login = async ({
       email: email,
       password: password,
     });
+    console.log("res: ",data);
+    
     if (error) {
       //   return the error
       return { status: error.status, message: error.message };
